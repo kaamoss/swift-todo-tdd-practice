@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct ToDoItem {
+struct ToDoItem : Equatable {
     let title: String
     let description: String?
     let dueDate: Double?
@@ -21,4 +21,20 @@ struct ToDoItem {
         self.location = location
     }
     
+    static func ==(lhs: ToDoItem, rhs: ToDoItem) -> Bool {
+        //if lhs.location != rhs.location {
+        if lhs.location != rhs.location {
+            return false
+        }
+        if lhs.dueDate != rhs.dueDate {
+            return false
+        }
+        if lhs.description != rhs.description {
+            return false
+        }
+        if lhs.title != rhs.title {
+            return false
+        }
+        return true
+    }
 }

@@ -57,4 +57,50 @@ class ToDoItemTests: XCTestCase {
         XCTAssertEqual(item.location?.name, location.name, "Initializer should set the item location")
     }
     
+    func testEqualItems_ShouldBeEqual() {
+        let firstItem = ToDoItem(title: "Frist!")
+        let secondItem = ToDoItem(title: "Frist!")
+        
+        XCTAssertEqual(firstItem, secondItem, "Should be the same")
+    }
+    
+    func testWhenLocationDiffers_ShouldNotBeEqual() {
+        let item1 = ToDoItem(title: "First Title", description: "First Description", dueDate: 0.0, location: Location(name: "Home"))
+        let item2 = ToDoItem(title: "First Title", description: "First Description", dueDate: 0.0, location: Location(name: "Office"))
+        
+        XCTAssertNotEqual(item1, item2)
+    }
+    
+    func testWhenOneLocationIsNilAndOtherIsnt_ShouldNotBeEqual() {
+        var item1 = ToDoItem(title: "First Title", description: "First Description", dueDate: 0.0, location: Location(name: "Home"))
+        var item2 = ToDoItem(title: "First Title", description: "First Description", dueDate: 0.0, location: nil)
+        
+        XCTAssertNotEqual(item1, item2)
+        
+        item1 = ToDoItem(title: "First Title", description: "First Description", dueDate: 0.0, location: nil)
+        item2 = ToDoItem(title: "First Title", description: "First Description", dueDate: 0.0, location: Location(name: "Home"))
+        
+        XCTAssertNotEqual(item1, item2)
+    }
+    
+    func testWhenTimestampDifferes_ShouldNotBeEqual() {
+        let item1 = ToDoItem(title: "First Title", description: "First Description", dueDate: 0.0)
+        let item2 = ToDoItem(title: "First Title", description: "First Description", dueDate: 1.0)
+        
+        XCTAssertNotEqual(item1, item2)
+    }
+    
+    func testWhenDescriptionDifferes_ShouldNotBeEqual() {
+        let item1 = ToDoItem(title: "First Title", description: "First Description")
+        let item2 = ToDoItem(title: "First Title", description: "Second Description")
+        
+        XCTAssertNotEqual(item1, item2)
+    }
+    
+    func testWhenTitleDifferes_ShouldNotBeEqual() {
+        let item1 = ToDoItem(title: "First Title")
+        let item2 = ToDoItem(title: "Second Title")
+        
+        XCTAssertNotEqual(item1, item2)
+    }
 }
