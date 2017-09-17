@@ -17,21 +17,51 @@ extension APIClientTests {
         
         var completionHandler: Handler?
         var url: URL?
+        var dataTask = MockURLSessionDataTask()
         
         func dataTask(with url: URL, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
             
             self.url = url
             self.completionHandler = completionHandler
-            return URLSession.shared.dataTask(with: url)
+            return dataTask
+        }
+    }
+    
+    class MockURLSessionDataTask : URLSessionDataTask {
+        var resumeGotCalled = false
+        
+        override func resume() {
+            resumeGotCalled = true
+        }
+    }
+    
+    class MockKeychainManager : KeychainAccessible {
+        var passwordDict = [String:String]()
+        
+        func setPassword(password: String, account: String) {
+            passwordDict[account] = password
+        }
+        
+        func deletePasswordForAccount(account: String) {
+            passwordDict.removeValue(forKey: account)
+        }
+        
+        func passwordForAccount(account: String) -> String? {
+            return passwordDict[account]
         }
     }
 }
 
 class APIClientTests: XCTestCase {
+    var sut: APIClient!
+    var mockURLSession: MockURLSession!
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        
+        sut = APIClient()
+        mockURLSession = MockURLSession()
+        sut.session = mockURLSession
     }
     
     override func tearDown() {
@@ -40,14 +70,47 @@ class APIClientTests: XCTestCase {
     }
     
     func testLogin_MakesRequestWithUsernameAndPassword() {
+        let completion = { (error: Error?) in }
+        sut.loginUserWithName(username: "dasdöm", password: "dictionary&Attack", completion: completion)
+        guard let url = mockURLSession.url else { XCTFail(); return }
+        let urlComponents = URLComponents(url: url,
+                                          resolvingAgainstBaseURL: true)
         
-        let sut = APIClient()
+        XCTAssertNotNil(mockURLSession.completionHandler)
+        XCTAssertEqual(urlComponents?.path, "/login")
         
-        let mockURLSession = MockURLSession()
+        let allowedCharacters = CharacterSet(
+            charactersIn: "/%&=?$#+-~@<>|\\*,.()[]{}^!").inverted
         
-        sut.session = mockURLSession
+        guard let expectedUsername = "dasdöm".addingPercentEncoding(
+            withAllowedCharacters: allowedCharacters) else { fatalError() }
+        
+        guard let expectedPassword = "dictionary&Attack".addingPercentEncoding(
+            withAllowedCharacters: allowedCharacters) else { fatalError() }
+        
+        XCTAssertEqual(urlComponents?.percentEncodedQuery,
+                       "username=\(expectedUsername)&password=\(expectedPassword)")
+    }
+    
+    func testLogin_CallsResumeOfDataTask() {        
+        let completion = { (error: Error?) in }
+        sut.loginUserWithName(username: "dasdöm", password: "dictionary&Attack", completion: completion)
+        XCTAssertTrue(mockURLSession.dataTask.resumeGotCalled)
+    }
+    
+    func testLogin_SetsToken() {
+        
+        let mockKeychainManager = MockKeychainManager()
+        sut.keychainManager = mockKeychainManager
         
         let completion = { (error: Error?) in }
-        sut.loginUserWithName(username: "peter", password: "dictionaryAttack", completion: completion)
+        sut.loginUserWithName(username: "dasdöm", password: "dictionary&Attack", completion: completion)
+        
+        let responseDict = ["token" : "1234567890"]
+        let responseData = try! JSONSerialization.data(withJSONObject: responseDict, options: [])
+        mockURLSession.completionHandler?(responseData, nil, nil)
+        
+        let token = mockKeychainManager.passwordForAccount(account: "token")
+        XCTAssertEqual(token, responseDict["token"])
     }
 }

@@ -11,6 +11,7 @@
 		3450B6C21F6E730C0077D01C /* InputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3450B6C11F6E730C0077D01C /* InputViewController.swift */; };
 		3450B6C61F6EFE310077D01C /* APIClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3450B6C51F6EFE310077D01C /* APIClientTests.swift */; };
 		3450B6C81F6EFE9D0077D01C /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3450B6C71F6EFE9D0077D01C /* APIClient.swift */; };
+		3450B6CA1F6F12B40077D01C /* KeychainAccessible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3450B6C91F6F12B40077D01C /* KeychainAccessible.swift */; };
 		347A2AFE1F6DEDDD00C8B081 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A2AFD1F6DEDDD00C8B081 /* AppDelegate.swift */; };
 		347A2B031F6DEDDD00C8B081 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 347A2B011F6DEDDD00C8B081 /* Main.storyboard */; };
 		347A2B051F6DEDDD00C8B081 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 347A2B041F6DEDDD00C8B081 /* Assets.xcassets */; };
@@ -48,6 +49,7 @@
 		3450B6C11F6E730C0077D01C /* InputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InputViewController.swift; path = Controller/InputViewController.swift; sourceTree = "<group>"; };
 		3450B6C51F6EFE310077D01C /* APIClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIClientTests.swift; sourceTree = "<group>"; };
 		3450B6C71F6EFE9D0077D01C /* APIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		3450B6C91F6F12B40077D01C /* KeychainAccessible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainAccessible.swift; sourceTree = "<group>"; };
 		347A2AFA1F6DEDDD00C8B081 /* ToDo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		347A2AFD1F6DEDDD00C8B081 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		347A2B021F6DEDDD00C8B081 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 				347A2B291F6E227600C8B081 /* Model */,
 				3450B6C31F6EF6FE0077D01C /* Controller */,
 				3450B6C71F6EFE9D0077D01C /* APIClient.swift */,
+				3450B6C91F6F12B40077D01C /* KeychainAccessible.swift */,
 			);
 			path = ToDo;
 			sourceTree = "<group>";
@@ -301,6 +304,7 @@
 			files = (
 				3450B6C21F6E730C0077D01C /* InputViewController.swift in Sources */,
 				347A2B281F6E016E00C8B081 /* ItemManager.swift in Sources */,
+				3450B6CA1F6F12B40077D01C /* KeychainAccessible.swift in Sources */,
 				347A2B301F6E27C000C8B081 /* ItemListDataProvider.swift in Sources */,
 				3450B6C81F6EFE9D0077D01C /* APIClient.swift in Sources */,
 				347A2AFE1F6DEDDD00C8B081 /* AppDelegate.swift in Sources */,

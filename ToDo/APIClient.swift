@@ -12,10 +12,30 @@ protocol ToDoURLSession {
     func dataTask(with url: URL, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask
 }
 
+extension URLSession : ToDoURLSession { }
+
 class APIClient {
-    lazy var session: ToDoURLSession = URLSession.shared as! ToDoURLSession
+    lazy var session: ToDoURLSession = URLSession.shared
+    var keychainManager: KeychainAccessible?
     
     func loginUserWithName(username: String, password: String, completion: (Error?) -> Void) {
     
+        let allowedCharacters = CharacterSet(
+            charactersIn: "/%&=?$#+-~@<>|\\*,.()[]{}^!").inverted
+        
+        guard let encodedUsername = username.addingPercentEncoding(
+            withAllowedCharacters: allowedCharacters) else { fatalError() }
+        
+        guard let encodedPassword = password.addingPercentEncoding(
+            withAllowedCharacters: allowedCharacters) else { fatalError() }
+        
+        guard let url = URL(string: "https://secure.last.fm/login?username=\(encodedUsername)&password=\(encodedPassword)") else { fatalError() }
+        session.dataTask(with: url) { (data, response, error) in
+            
+            let responseDict = try! JSONSerialization.jsonObject(with: data!, options: []) as! [String:String]
+            let token = responseDict["token"] as! String
+            self.keychainManager?.setPassword(password: token, account: "token")
+            
+        }.resume()
     }
 }
