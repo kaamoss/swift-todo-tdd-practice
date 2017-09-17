@@ -24,6 +24,9 @@
 		347A2B321F6E2BA700C8B081 /* ItemListDataProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A2B311F6E2BA700C8B081 /* ItemListDataProviderTests.swift */; };
 		347A2B361F6E381700C8B081 /* ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A2B351F6E381700C8B081 /* ItemCell.swift */; };
 		347A2B381F6E51BC00C8B081 /* ItemCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A2B371F6E51BC00C8B081 /* ItemCellTests.swift */; };
+		347A2B3A1F6E644800C8B081 /* DetailViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A2B391F6E644800C8B081 /* DetailViewControllerTests.swift */; };
+		347A2B3C1F6E650500C8B081 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 347A2B3B1F6E650500C8B081 /* DetailViewController.swift */; };
+		347A2B3F1F6E685000C8B081 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 347A2B3E1F6E685000C8B081 /* MapKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +61,9 @@
 		347A2B311F6E2BA700C8B081 /* ItemListDataProviderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ItemListDataProviderTests.swift; path = Controller/ItemListDataProviderTests.swift; sourceTree = "<group>"; };
 		347A2B351F6E381700C8B081 /* ItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ItemCell.swift; path = Controller/ItemCell.swift; sourceTree = "<group>"; };
 		347A2B371F6E51BC00C8B081 /* ItemCellTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ItemCellTests.swift; path = Controller/ItemCellTests.swift; sourceTree = "<group>"; };
+		347A2B391F6E644800C8B081 /* DetailViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DetailViewControllerTests.swift; path = Controller/DetailViewControllerTests.swift; sourceTree = "<group>"; };
+		347A2B3B1F6E650500C8B081 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DetailViewController.swift; path = Controller/DetailViewController.swift; sourceTree = "<group>"; };
+		347A2B3E1F6E685000C8B081 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				347A2B3F1F6E685000C8B081 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,6 +91,7 @@
 				347A2AFC1F6DEDDD00C8B081 /* ToDo */,
 				347A2B111F6DEDDD00C8B081 /* ToDoTests */,
 				347A2AFB1F6DEDDD00C8B081 /* Products */,
+				347A2B3D1F6E685000C8B081 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -108,6 +116,7 @@
 				347A2B2D1F6E237900C8B081 /* ItemListViewController.swift */,
 				347A2B2F1F6E27C000C8B081 /* ItemListDataProvider.swift */,
 				347A2B351F6E381700C8B081 /* ItemCell.swift */,
+				347A2B3B1F6E650500C8B081 /* DetailViewController.swift */,
 			);
 			path = ToDo;
 			sourceTree = "<group>";
@@ -121,6 +130,7 @@
 				347A2B2B1F6E22F200C8B081 /* ItemListViewControllerTests.swift */,
 				347A2B311F6E2BA700C8B081 /* ItemListDataProviderTests.swift */,
 				347A2B371F6E51BC00C8B081 /* ItemCellTests.swift */,
+				347A2B391F6E644800C8B081 /* DetailViewControllerTests.swift */,
 			);
 			path = ToDoTests;
 			sourceTree = "<group>";
@@ -143,6 +153,14 @@
 				347A2B251F6E00E200C8B081 /* ItemManagerTests.swift */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		347A2B3D1F6E685000C8B081 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				347A2B3E1F6E685000C8B081 /* MapKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -196,6 +214,11 @@
 					347A2AF91F6DEDDD00C8B081 = {
 						CreatedOnToolsVersion = 8.3.3;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					347A2B0D1F6DEDDD00C8B081 = {
 						CreatedOnToolsVersion = 8.3.3;
@@ -255,6 +278,7 @@
 				347A2B361F6E381700C8B081 /* ItemCell.swift in Sources */,
 				347A2B201F6DF24700C8B081 /* ToDoItem.swift in Sources */,
 				347A2B2E1F6E237900C8B081 /* ItemListViewController.swift in Sources */,
+				347A2B3C1F6E650500C8B081 /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,6 +293,7 @@
 				347A2B381F6E51BC00C8B081 /* ItemCellTests.swift in Sources */,
 				347A2B261F6E00E200C8B081 /* ItemManagerTests.swift in Sources */,
 				347A2B131F6DEDDD00C8B081 /* ToDoTests.swift in Sources */,
+				347A2B3A1F6E644800C8B081 /* DetailViewControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
