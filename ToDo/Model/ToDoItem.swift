@@ -12,11 +12,13 @@ struct ToDoItem {
     let title: String
     let description: String?
     let dueDate: Double?
+    let location: Location?
     
-    init(title: String, description: String? = nil, dueDate: Double? = nil) {
+    init(title: String, description: String? = nil, dueDate: Double? = nil, location: Location? = nil) {
         self.title = title
         self.description = description
         self.dueDate = dueDate
+        self.location = location
     }
     
 }

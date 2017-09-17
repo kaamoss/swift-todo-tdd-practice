@@ -46,4 +46,15 @@ class ToDoItemTests: XCTestCase {
         XCTAssertEqual(item.dueDate, dueDateVal, "Initializer should set the item due date")
     }
     
+    func testInit_ShouldTakeTitleAndDescAndDueDateAndLocation() {
+        let location = Location(name: "Test name")
+        let titleStr = "Test Title"
+        let descStr = "Test description"
+        let dueDateVal = 0.0
+
+        let item = ToDoItem(title: titleStr, description: descStr, dueDate: dueDateVal, location: location)
+        
+        XCTAssertEqual(item.location?.name, location.name, "Initializer should set the item location")
+    }
+    
 }
