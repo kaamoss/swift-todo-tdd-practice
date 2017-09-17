@@ -71,7 +71,7 @@ class APIClientTests: XCTestCase {
     
     func testLogin_MakesRequestWithUsernameAndPassword() {
         let completion = { (error: Error?) in }
-        sut.loginUserWithName(username: "dasdöm", password: "dictionary&Attack", completion: completion)
+        sut.loginUserWithName(username: "kaamöss", password: "dictionary&Attack", completion: completion)
         guard let url = mockURLSession.url else { XCTFail(); return }
         let urlComponents = URLComponents(url: url,
                                           resolvingAgainstBaseURL: true)
@@ -82,7 +82,7 @@ class APIClientTests: XCTestCase {
         let allowedCharacters = CharacterSet(
             charactersIn: "/%&=?$#+-~@<>|\\*,.()[]{}^!").inverted
         
-        guard let expectedUsername = "dasdöm".addingPercentEncoding(
+        guard let expectedUsername = "kaamöss".addingPercentEncoding(
             withAllowedCharacters: allowedCharacters) else { fatalError() }
         
         guard let expectedPassword = "dictionary&Attack".addingPercentEncoding(
@@ -94,7 +94,7 @@ class APIClientTests: XCTestCase {
     
     func testLogin_CallsResumeOfDataTask() {        
         let completion = { (error: Error?) in }
-        sut.loginUserWithName(username: "dasdöm", password: "dictionary&Attack", completion: completion)
+        sut.loginUserWithName(username: "kaamöss", password: "dictionary&Attack", completion: completion)
         XCTAssertTrue(mockURLSession.dataTask.resumeGotCalled)
     }
     
@@ -104,7 +104,7 @@ class APIClientTests: XCTestCase {
         sut.keychainManager = mockKeychainManager
         
         let completion = { (error: Error?) in }
-        sut.loginUserWithName(username: "dasdöm", password: "dictionary&Attack", completion: completion)
+        sut.loginUserWithName(username: "kaamöss", password: "dictionary&Attack", completion: completion)
         
         let responseDict = ["token" : "1234567890"]
         let responseData = try! JSONSerialization.data(withJSONObject: responseDict, options: [])
@@ -112,5 +112,47 @@ class APIClientTests: XCTestCase {
         
         let token = mockKeychainManager.passwordForAccount(account: "token")
         XCTAssertEqual(token, responseDict["token"])
+    }
+    
+    func testLogin_ThrowsErrorWhenJSONIsInvalid() {
+        var theErr: Error?
+        let completion = { (error: Error?) in
+            theErr = error
+        }
+        sut.loginUserWithName(username: "kaamöss", password: "wrongpassword", completion: completion)
+        
+        let responseData = Data()
+        mockURLSession.completionHandler?(responseData, nil, nil)
+        
+        XCTAssertNotNil(theErr)
+    }
+    
+    func testLogin_ThowsErrorWhenDataIsNil() {
+        var theErr: Error?
+        let completion = { (error: Error?) in
+            theErr = error
+        }
+        sut.loginUserWithName(username: "kaamöss", password: "wrongpassword", completion: completion)
+        
+        let responseData = Data()
+        mockURLSession.completionHandler?(nil, nil, nil)
+        
+        XCTAssertNotNil(theErr)
+    }
+    
+    func testLogin_ThrowsErrorWhenResponseHasError() {
+        var theErr: Error?
+        let completion = { (error: Error?) in
+            theErr = error
+        }
+        sut.loginUserWithName(username: "kaamöss", password: "wrongpassword", completion: completion)
+        
+        let responseDict = ["token" : "1234567890"]
+        let responseData = try! JSONSerialization.data(withJSONObject: responseDict, options: [])
+        
+        let error = NSError(domain: "SomeError", code: 1234, userInfo: nil)
+        mockURLSession.completionHandler?(responseData, nil, error)
+        
+        XCTAssertNotNil(theErr)
     }
 }
