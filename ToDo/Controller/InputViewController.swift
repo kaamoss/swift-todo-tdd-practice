@@ -46,10 +46,9 @@ class InputViewController: UIViewController {
         if let locationName = locationTextField.text, locationName.characters.count > 0 {
             if let address = addressTextField.text, address.characters.count > 0 {
                 
-                geocoder.geocodeAddressString(address, completionHandler: {
-                    [unowned self] (placeMarks, error) -> Void in
+                geocoder.geocodeAddressString(address, completionHandler: {placemarks, error in
                     
-                    let placeMark = placeMarks?.first
+                    let placeMark = placemarks?.first
                     
                     let item = ToDoItem(title: titleString, description: descString, dueDate: date?.timeIntervalSince1970, location: Location(name: locationName, coordinate: placeMark?.location?.coordinate))
                     

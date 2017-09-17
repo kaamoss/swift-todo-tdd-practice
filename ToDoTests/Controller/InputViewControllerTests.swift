@@ -71,12 +71,13 @@ class InputViewControllerTests: XCTestCase {
         let mockGeocoder = MockGeocoder()
         sut.geocoder = mockGeocoder
         
-        sut.itemManager = ItemManager()
+        let itemManager = ItemManager()
+        sut.itemManager = itemManager
         
         sut.save()
         
         let coordinate: CLLocationCoordinate2D;
-        coordinate = CLLocationCoordinate2DMake(37.3316851, -122.0300674)
+        coordinate = CLLocationCoordinate2DMake(37.3316833, -122.0301031)
         placemark.mockCoordinate = coordinate
         mockGeocoder.completionHandler?([placemark], nil)
         
@@ -84,7 +85,7 @@ class InputViewControllerTests: XCTestCase {
         
         let testItem = ToDoItem(title: "Test Title", description: "Test Description", dueDate: 1505631600, location: Location(name: "We Work Culver City", coordinate: coordinate))
         
-        //XCTAssertEqual(item, testItem) TODO: why isn't location.coordinate == location.coordinate ???
+        //XCTAssertEqual(item, testItem)
         XCTAssertNotEqual(item, testItem)
     }
     
@@ -96,5 +97,34 @@ class InputViewControllerTests: XCTestCase {
         }
         
         XCTAssertTrue(actions.contains("save"))
+    }
+    
+    func test_GeocoderWorksAsExpected() {
+        let expect = expectation(description: "Wait for geocode")
+        
+        CLGeocoder().geocodeAddressString("Infinte Loop 1, Cupertino", completionHandler: {placemarks, error in
+            
+            let placemark = placemarks?.first
+            
+            
+            let coordinate = placemark?.location?.coordinate
+            guard let latitude = coordinate?.latitude else {
+                XCTFail()
+                return
+            }
+            
+            guard let longitude = coordinate?.longitude else {
+                XCTFail()
+                return
+            }
+            
+            XCTAssertEqualWithAccuracy(latitude, 37.3316833, accuracy: 0.000001)
+            XCTAssertEqualWithAccuracy(longitude, -122.0301031, accuracy: 0.000001)
+
+            
+            expect.fulfill()
+        })
+        
+        waitForExpectations(timeout: 3, handler: nil)
     }
 }
