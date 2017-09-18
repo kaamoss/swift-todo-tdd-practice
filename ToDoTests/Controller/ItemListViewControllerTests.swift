@@ -90,5 +90,16 @@ class ItemListViewControllerTests: XCTestCase {
         XCTAssertTrue(sut.itemManager === inputItemManager)
     }
     
+    func testViewDidLoad_SetsItemManagerToDataProvider() {
+        XCTAssertTrue(sut.itemManager === sut.dataProvider.itemManager)
+    }
     
-}
+    func testViewWillAppear_TableViewIsReloaded() {
+        XCTAssertTrue(sut.tableView.numberOfRows(inSection: 0) == 0)
+        sut.itemManager.addItem(item: ToDoItem(title: "Firsty"))
+        sut.beginAppearanceTransition(true, animated: true)
+        sut.endAppearanceTransition()
+        XCTAssertTrue(sut.tableView.numberOfRows(inSection: 0) == 1)
+    }
+}12
+42

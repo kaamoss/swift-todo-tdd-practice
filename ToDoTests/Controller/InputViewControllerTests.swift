@@ -113,6 +113,22 @@ class InputViewControllerTests: XCTestCase {
         XCTAssertTrue(actions.contains("save"))
     }
     
+    func testSave_DismissesViewController() {
+        let mockInputViewController = MockInputViewController()
+        
+        mockInputViewController.titleTextField = UITextField()
+        mockInputViewController.dueDateTextField = UITextField()
+        mockInputViewController.locationTextField = UITextField()
+        mockInputViewController.addressTextField = UITextField()
+        mockInputViewController.descriptionTextField = UITextField()
+        
+        mockInputViewController.titleTextField.text = "Frist!"
+        mockInputViewController.save()
+        
+        XCTAssertTrue(mockInputViewController.dismissGotCalled)
+        
+    }
+    
     func test_GeocoderWorksAsExpected() {
         let expect = expectation(description: "Wait for geocode")
         
@@ -140,21 +156,5 @@ class InputViewControllerTests: XCTestCase {
         })
         
         waitForExpectations(timeout: 3, handler: nil)
-    }
-    
-    func testSave_DismissesViewController() {
-        let mockInputViewController = MockInputViewController()
-        
-        mockInputViewController.titleTextField = UITextField()
-        mockInputViewController.dueDateTextField = UITextField()
-        mockInputViewController.locationTextField = UITextField()
-        mockInputViewController.addressTextField = UITextField()
-        mockInputViewController.descriptionTextField = UITextField()
-        
-        mockInputViewController.titleTextField.text = "Frist!"
-        mockInputViewController.save()
-        
-        XCTAssertTrue(mockInputViewController.dismissGotCalled)
-        
     }
 }
