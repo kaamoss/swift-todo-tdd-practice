@@ -46,15 +46,38 @@ class InputViewController: UIViewController {
         if let locationName = locationTextField.text, locationName.characters.count > 0 {
             if let address = addressTextField.text, address.characters.count > 0 {
                 
-                geocoder.geocodeAddressString(address, completionHandler: {placemarks, error in
+                geocoder.geocodeAddressString(address) {
+                    [unowned self] (placeMarks, error) -> Void in
                     
-                    let placeMark = placemarks?.first
+                    let placeMark = placeMarks?.first
                     
                     let item = ToDoItem(title: titleString, description: descString, dueDate: date?.timeIntervalSince1970, location: Location(name: locationName, coordinate: placeMark?.location?.coordinate))
+                    /*
+                    DispatchQueue.main.async(execute: {
+                        self.itemManager?.addItem(item: item)
+                        self.dismiss(animated: true)
+                    }) */
                     
                     self.itemManager?.addItem(item: item)
-                })
+                    self.dismiss(animated: true)
+                }
+            } else {
+                let item = ToDoItem(title: titleString,
+                                    description: descString,
+                                    dueDate: date?.timeIntervalSince1970,
+                                    location: nil)
+                self.itemManager?.addItem(item: item)
+                self.dismiss(animated: true)
             }
+        } else {
+            let item = ToDoItem(title: titleString,
+                                description: descString,
+                                dueDate: date?.timeIntervalSince1970,
+                                location: nil)
+            self.itemManager?.addItem(item: item)
+            self.dismiss(animated: true)
         }
+        
+        
     }
 }

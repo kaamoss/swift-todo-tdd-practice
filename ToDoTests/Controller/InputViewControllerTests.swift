@@ -16,6 +16,7 @@ extension InputViewControllerTests {
         var completionHandler: CLGeocodeCompletionHandler?
         
         override func geocodeAddressString(_ addressString: String, completionHandler: @escaping CLGeocodeCompletionHandler) {
+            
             self.completionHandler = completionHandler
         }
     }
@@ -26,6 +27,19 @@ extension InputViewControllerTests {
         override var location: CLLocation? {
             guard let coordinate = mockCoordinate else { return CLLocation() }
             return CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        }
+    }
+    
+    class MockInputViewController : InputViewController {
+        
+        var dismissGotCalled = false
+        var completionHandler: (() -> Void)?
+        
+        override func dismiss(animated flag: Bool,
+                              completion: (() -> Void)? = nil) {
+            
+            dismissGotCalled = true
+            completionHandler?()
         }
     }
 }
@@ -40,7 +54,6 @@ class InputViewControllerTests: XCTestCase {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         sut = storyboard.instantiateViewController(withIdentifier: "InputViewController") as! InputViewController
         _ = sut.view
-        placemark = MockPlacemark()
     }
     
     override func tearDown() {
@@ -76,6 +89,7 @@ class InputViewControllerTests: XCTestCase {
         
         sut.save()
         
+        placemark = MockPlacemark()
         let coordinate: CLLocationCoordinate2D;
         coordinate = CLLocationCoordinate2DMake(37.3316833, -122.0301031)
         placemark.mockCoordinate = coordinate
@@ -126,5 +140,21 @@ class InputViewControllerTests: XCTestCase {
         })
         
         waitForExpectations(timeout: 3, handler: nil)
+    }
+    
+    func testSave_DismissesViewController() {
+        let mockInputViewController = MockInputViewController()
+        
+        mockInputViewController.titleTextField = UITextField()
+        mockInputViewController.dueDateTextField = UITextField()
+        mockInputViewController.locationTextField = UITextField()
+        mockInputViewController.addressTextField = UITextField()
+        mockInputViewController.descriptionTextField = UITextField()
+        
+        mockInputViewController.titleTextField.text = "Frist!"
+        mockInputViewController.save()
+        
+        XCTAssertTrue(mockInputViewController.dismissGotCalled)
+        
     }
 }
