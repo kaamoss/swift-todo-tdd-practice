@@ -75,19 +75,33 @@ class InputViewControllerTests: XCTestCase {
     }
     
     func testSave_UsesGeocoderToGetCoordinateFromAddress() {
-        sut.titleTextField.text = "Test Title"
-        sut.dueDateTextField.text = "09/17/2017"
-        sut.locationTextField.text = "We Work Culver City"
-        sut.addressTextField.text = "Infinte Loop 1, Cupertino"
-        sut.descriptionTextField.text = "Test Description"
+        let mockSut = MockInputViewController()
+        
+        mockSut.titleTextField = UITextField()
+        mockSut.dueDateTextField = UITextField()
+        mockSut.locationTextField = UITextField()
+        mockSut.addressTextField = UITextField()
+        mockSut.descriptionTextField = UITextField()
+        
+        mockSut.titleTextField.text = "Test Title"
+        mockSut.dueDateTextField.text = "09/17/2017"
+        mockSut.locationTextField.text = "We Work Culver City"
+        mockSut.addressTextField.text = "Infinte Loop 1, Cupertino"
+        mockSut.descriptionTextField.text = "Test Description"
         
         let mockGeocoder = MockGeocoder()
-        sut.geocoder = mockGeocoder
+        mockSut.geocoder = mockGeocoder
         
         let itemManager = ItemManager()
-        sut.itemManager = itemManager
+        mockSut.itemManager = itemManager
         
-        sut.save()
+        let dismissExpectation = expectation(description: "Dismiss")
+        
+        mockSut.completionHandler = {
+            dismissExpectation.fulfill()
+        }
+        
+        mockSut.save()
         
         placemark = MockPlacemark()
         let coordinate: CLLocationCoordinate2D;
@@ -95,7 +109,9 @@ class InputViewControllerTests: XCTestCase {
         placemark.mockCoordinate = coordinate
         mockGeocoder.completionHandler?([placemark], nil)
         
-        let item = sut.itemManager?.itemAtIndex(index: 0)
+        waitForExpectations(timeout: 1, handler: nil)
+        
+        let item = mockSut.itemManager?.itemAtIndex(index: 0)
         
         let testItem = ToDoItem(title: "Test Title", description: "Test Description", dueDate: 1505631600, location: Location(name: "We Work Culver City", coordinate: coordinate))
         

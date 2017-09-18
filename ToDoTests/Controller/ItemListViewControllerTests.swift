@@ -9,6 +9,18 @@
 import XCTest
 @testable import ToDo
 
+extension ItemListViewControllerTests {
+    class MockNavigationController : UINavigationController {
+        
+        var pushedViewController: UIViewController?
+        
+        override func pushViewController(_ viewController: UIViewController, animated: Bool) {
+            pushedViewController = viewController
+            super.pushViewController(viewController, animated: animated)
+        }
+    }
+}
+
 class ItemListViewControllerTests: XCTestCase {
     var sut: ItemListViewController!
     
@@ -101,5 +113,44 @@ class ItemListViewControllerTests: XCTestCase {
         sut.endAppearanceTransition()
         XCTAssertTrue(sut.tableView.numberOfRows(inSection: 0) == 1)
     }
-}12
-42
+    
+    func testItemSelectedNotification_PushesDetailVC() {
+        
+        let mockNavigationController = MockNavigationController(rootViewController: sut)
+        
+        UIApplication.shared.keyWindow?.rootViewController = mockNavigationController
+        
+        _ = sut.view
+        
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ItemSelectedNotification"), object: self, userInfo: ["index": 1])
+        
+        guard let detailViewController = mockNavigationController.pushedViewController as? DetailViewController else { XCTFail(); return }
+        guard let detailItemManager = detailViewController.itemInfo?.0 else { XCTFail(); return }
+        
+        guard let index = detailViewController.itemInfo?.1 else { XCTFail(); return }
+        
+        _ = detailViewController.view
+        
+        XCTAssertNotNil(detailViewController)
+        XCTAssertTrue(detailItemManager === sut.itemManager)
+        XCTAssertEqual(index, 1)
+        
+    }
+    /*
+    
+    func testSelectingACell_SendsNotification() {
+        let item = ToDoItem(title: "First")
+        sut.itemManager.addItem(item: item)
+        
+        expectation(forNotification: "ItemSelctedNotification", object: nil) { (notification) -> Bool in
+            guard let index = notification.userInfo?["index"] as? Int else { return false }
+            return index == 0
+        }
+        
+        sut.tableView.delegate?.tableView!(sut.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
+        
+        waitForExpectations(timeout: 3, handler: nil)
+        
+    }
+ */
+}
