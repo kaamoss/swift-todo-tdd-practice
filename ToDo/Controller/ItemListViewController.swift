@@ -18,7 +18,7 @@ class ItemListViewController: UIViewController {
         tableView.delegate = dataProvider
         dataProvider.itemManager = itemManager
         
-        NotificationCenter.default.addObserver(self, selector: "ShowDetails:", name: NSNotification.Name(rawValue: "ItemSelectedNotification"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showDetails(sender:)), name: NSNotification.Name(rawValue: "ItemSelectedNotification"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -27,7 +27,7 @@ class ItemListViewController: UIViewController {
         tableView.reloadData()
     }
     
-    func showDetais(sender: Notification) {
+    func showDetails(sender: Notification) {
         guard let index = sender.userInfo?["index"] as? Int else {
             fatalError()
         }

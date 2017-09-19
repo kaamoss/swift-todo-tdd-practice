@@ -136,21 +136,4 @@ class ItemListViewControllerTests: XCTestCase {
         XCTAssertEqual(index, 1)
         
     }
-    /*
-    
-    func testSelectingACell_SendsNotification() {
-        let item = ToDoItem(title: "First")
-        sut.itemManager.addItem(item: item)
-        
-        expectation(forNotification: "ItemSelctedNotification", object: nil) { (notification) -> Bool in
-            guard let index = notification.userInfo?["index"] as? Int else { return false }
-            return index == 0
-        }
-        
-        sut.tableView.delegate?.tableView!(sut.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
-        
-        waitForExpectations(timeout: 3, handler: nil)
-        
-    }
- */
 }

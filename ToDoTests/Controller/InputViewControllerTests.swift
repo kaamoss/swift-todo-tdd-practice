@@ -115,8 +115,7 @@ class InputViewControllerTests: XCTestCase {
         
         let testItem = ToDoItem(title: "Test Title", description: "Test Description", dueDate: 1505631600, location: Location(name: "We Work Culver City", coordinate: coordinate))
         
-        //XCTAssertEqual(item, testItem)
-        XCTAssertNotEqual(item, testItem)
+        XCTAssertEqual(item, testItem)
     }
     
     func test_SaveButtonHasSaveAction() {

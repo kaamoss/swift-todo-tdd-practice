@@ -21,11 +21,17 @@ class ItemManager: NSObject {
     }
     
     func itemAtIndex(index: Int) -> ToDoItem {
-        return toDoItems[index]
+        if(index < toDoCount) {
+            return toDoItems[index]
+        }
+        return ToDoItem(title: "")
     }
     
     func doneItemAtIndex(index: Int) -> ToDoItem {
-        return doneItems[index]
+        if(index < doneCount) {
+            return doneItems[index]
+        }
+        return ToDoItem(title: "")
     }
     
     func checkItemAtIndex(index: Int) {
