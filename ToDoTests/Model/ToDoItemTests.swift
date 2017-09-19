@@ -103,4 +103,16 @@ class ToDoItemTests: XCTestCase {
         
         XCTAssertNotEqual(item1, item2)
     }
+    
+    func test_CanBeSerializedAndDeserialized() {
+        let location = Location(name: "Home")
+        let item = ToDoItem(title: "The Title", description: "The Description", dueDate: 1.0, location: location)
+        
+        let dict = item.plistDict
+        XCTAssertNotNil(dict)
+        XCTAssertTrue(dict is [String:Any])
+        
+        let recreatedItem = ToDoItem(dict: dict)
+        XCTAssertEqual(item, recreatedItem)
+    }
 }

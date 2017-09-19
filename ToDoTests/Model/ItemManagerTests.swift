@@ -8,6 +8,7 @@
 
 import XCTest
 @testable import ToDo
+import CoreLocation
 
 class ItemManagerTests: XCTestCase {
     var sut: ItemManager!
@@ -19,7 +20,9 @@ class ItemManagerTests: XCTestCase {
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        sut.removeAllItems()
+        sut = nil
+        
         super.tearDown()
     }
     
@@ -81,5 +84,26 @@ class ItemManagerTests: XCTestCase {
         
         XCTAssertEqual(sut.toDoCount, 1, "toDoCount should be 1")
         XCTAssertEqual(sut.doneCount, 0, "doneCount should be 0")
+    }
+    
+    func test_ToDoItemsGetSerialized() {
+        var itemManager: ItemManager? = ItemManager()
+        
+        let firstItem = ToDoItem(title: "First")
+        itemManager!.addItem(item: firstItem)
+        
+        let location = Location(name: "Home", coordinate: CLLocationCoordinate2DMake(50.0, 6.0))
+        let secondItem = ToDoItem(title: "Second", description: "The Description", dueDate: 1.0, location: location)
+        itemManager!.addItem(item: secondItem)
+        
+        NotificationCenter.default.post(name: .UIApplicationWillResignActive, object: nil)
+        itemManager = nil
+        
+        XCTAssertNil(itemManager)
+        
+        itemManager = ItemManager()
+        XCTAssertEqual(itemManager?.toDoCount, 2)
+        XCTAssertEqual(itemManager?.itemAtIndex(index: 0), firstItem)
+        XCTAssertEqual(itemManager?.itemAtIndex(index: 1), secondItem)
     }
 }
